@@ -1,11 +1,17 @@
-import Versions from './components/Versions'
-import electronLogo from './assets/electron.svg'
-import ReactCodeMirror from '@uiw/react-codemirror'
+// import Versions from './components/Versions'
+// import electronLogo from './assets/electron.svg'
+import { CodeMirror } from './components/CodeMirror'
+import TitleBar from './components/TitleBar/TitleBar'
 
 function App(): JSX.Element {
-  const ipcHandle = (): void => window.electron.ipcRenderer.send('ping')
-  const code = "console.log('Code Mirror!')"
-  return <ReactCodeMirror value={code} height="100px" theme="dark" />
+  // const ipcHandle = (): void => window.electron.ipcRenderer.send('ping')
+
+  return (
+    <>
+      <TitleBar />
+      <CodeMirror />
+    </>
+  )
 }
 
 export default App

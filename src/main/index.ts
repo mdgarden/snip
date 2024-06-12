@@ -13,12 +13,26 @@ function createWindow(): void {
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
-      sandbox: false
-    }
+      sandbox: false,
+      webviewTag: true
+    },
+    titleBarStyle: 'customButtonsOnHover'
   })
 
   mainWindow.on('ready-to-show', () => {
     mainWindow.show()
+  })
+
+  ipcMain.on('minimize-window', () => {
+    mainWindow.minimize()
+  })
+
+  ipcMain.on('maximize-window', () => {
+    mainWindow.maximize()
+  })
+
+  ipcMain.on('close-window', () => {
+    mainWindow.close()
   })
 
   mainWindow.webContents.setWindowOpenHandler((details) => {
