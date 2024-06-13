@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import './TitleBar.css'
 
 interface TitleBarProps {
@@ -15,6 +16,13 @@ function TitleBar({
   removeTab,
   handleTabClick
 }: TitleBarProps): JSX.Element {
+  const [isAlwaysOnTop, setIsAlwaysOnTop] = useState(false)
+
+  const toggleAlwaysOnTop = (): void => {
+    setIsAlwaysOnTop(!isAlwaysOnTop)
+    window.electron.ipcRenderer.send('toggle-always-on-top', !isAlwaysOnTop)
+  }
+
   return (
     <div className="title-bar">
       <div className="tabs">
@@ -43,12 +51,17 @@ function TitleBar({
         </div>
       </div>
       <div className="window-controls">
-        <span className="always-on-top" role="button">
-          📌
+        <span
+          className="always-on-top"
+          onClick={toggleAlwaysOnTop}
+          role="button"
+          aria-pressed={isAlwaysOnTop}
+        >
+          {isAlwaysOnTop ? '📍' : '📌'}
         </span>
-        <button>-</button>
-        <button>+</button>
-        <button>x</button>
+        <button onClick={() => window.electron.ipcRenderer.send('minimize-window')}>-</button>
+        <button onClick={() => window.electron.ipcRenderer.send('maximize-window')}>+</button>
+        <button onClick={() => window.electron.ipcRenderer.send('close-window')}>x</button>
       </div>
     </div>
   )
