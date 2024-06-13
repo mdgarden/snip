@@ -1,0 +1,16 @@
+.title-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #333;
+  color: white;
+  padding: 5px 10px;
+}
+
+.window-controls button {
+  border: none;
+  background: none;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
