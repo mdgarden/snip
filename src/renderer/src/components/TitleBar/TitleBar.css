@@ -1,16 +1,64 @@
 .title-bar {
   display: flex;
+  width: 100%;
   justify-content: space-between;
   align-items: center;
-  background-color: #333;
+  padding: 10px;
+  -webkit-app-region: drag;
+  background-color: #282c34;
   color: white;
+  user-select: none; /* Prevent text selection */
+  border: none;
+}
+
+.tabs {
+  display: flex;
+  align-items: center;
+  -webkit-app-region: no-drag;
+}
+
+.tab {
   padding: 5px 10px;
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  align-items: center;
+}
+
+.tab.active {
+  font-weight: bold;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.tab .close-btn {
+  margin-left: 8px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  color: white;
+}
+
+.window-controls {
+  display: flex;
+  align-items: center;
+  -webkit-app-region: no-drag;
 }
 
 .window-controls button {
-  border: none;
   background: none;
+  border: none;
   color: white;
+  padding: 0 10px;
   font-size: 16px;
+  cursor: pointer;
+}
+
+.window-controls button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.always-on-top {
+  font-size: 20px;
+  margin-left: 10px;
   cursor: pointer;
 }

@@ -8,7 +8,7 @@ function createWindow(): void {
   const mainWindow = new BrowserWindow({
     width: 900,
     height: 670,
-    show: false,
+    show: true,
     autoHideMenuBar: true,
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
@@ -16,7 +16,8 @@ function createWindow(): void {
       sandbox: false,
       webviewTag: true
     },
-    titleBarStyle: 'customButtonsOnHover'
+    titleBarStyle: 'customButtonsOnHover',
+    frame: false
   })
 
   mainWindow.on('ready-to-show', () => {
@@ -33,6 +34,10 @@ function createWindow(): void {
 
   ipcMain.on('close-window', () => {
     mainWindow.close()
+  })
+
+  ipcMain.on('toggle-always-on-top', (_, isAlwaysOnTop) => {
+    mainWindow.setAlwaysOnTop(isAlwaysOnTop)
   })
 
   mainWindow.webContents.setWindowOpenHandler((details) => {
