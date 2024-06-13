@@ -1,45 +1,31 @@
-import { useState } from 'react'
 import './TitleBar.css'
 
-function TitleBar(): JSX.Element {
-  const [tabs, setTabs] = useState(['Tab 1', 'Tab 2'])
-  const [activeTab, setActiveTab] = useState(tabs[0])
-  const [isAlwaysOnTop, setIsAlwaysOnTop] = useState(false)
+interface TitleBarProps {
+  tabs: { name: string; code: string }[]
+  activeTab: { name: string; code: string }
+  addTab: () => void
+  removeTab: (tab: { name: string; code: string }) => void
+  handleTabClick: (tab: { name: string; code: string }) => void
+}
 
-  const addTab = (): void => {
-    const newTab = `Tab ${tabs.length + 1}`
-    setTabs([...tabs, newTab])
-    setActiveTab(newTab)
-  }
-
-  const removeTab = (tabToRemove): void => {
-    const newTabs = tabs.filter((tab) => tab !== tabToRemove)
-    setTabs(newTabs)
-    if (tabToRemove === activeTab && newTabs.length > 0) {
-      setActiveTab(newTabs[0])
-    }
-  }
-
-  const handleTabClick = (tab): void => {
-    setActiveTab(tab)
-  }
-
-  const toggleAlwaysOnTop = (): void => {
-    setIsAlwaysOnTop(!isAlwaysOnTop)
-    window.electron.ipcRenderer.send('toggle-always-on-top', !isAlwaysOnTop)
-  }
-
+function TitleBar({
+  tabs,
+  activeTab,
+  addTab,
+  removeTab,
+  handleTabClick
+}: TitleBarProps): JSX.Element {
   return (
     <div className="title-bar">
       <div className="tabs">
         {tabs.map((tab, index) => (
           <div
             key={index}
-            className={`tab ${tab === activeTab ? 'active' : ''}`}
+            className={`tab ${tab.name === activeTab.name ? 'active' : ''}`}
             onClick={() => handleTabClick(tab)}
           >
-            {tab}
-            {tab === activeTab && (
+            {tab.name}
+            {tab.name === activeTab.name && (
               <button
                 className="close-btn"
                 onClick={(e) => {
@@ -57,17 +43,12 @@ function TitleBar(): JSX.Element {
         </div>
       </div>
       <div className="window-controls">
-        <span
-          className="always-on-top"
-          onClick={toggleAlwaysOnTop}
-          role="button"
-          aria-pressed={isAlwaysOnTop}
-        >
-          {isAlwaysOnTop ? '📍' : '📌'}
+        <span className="always-on-top" role="button">
+          📌
         </span>
-        <button onClick={() => window.electron.ipcRenderer.send('minimize-window')}>-</button>
-        <button onClick={() => window.electron.ipcRenderer.send('maximize-window')}>+</button>
-        <button onClick={() => window.electron.ipcRenderer.send('close-window')}>x</button>
+        <button>-</button>
+        <button>+</button>
+        <button>x</button>
       </div>
     </div>
   )

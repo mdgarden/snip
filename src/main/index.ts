@@ -9,7 +9,7 @@ function createWindow(): void {
     width: 900,
     height: 670,
     show: true,
-    autoHideMenuBar: true,
+    autoHideMenuBar: false,
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
@@ -19,6 +19,8 @@ function createWindow(): void {
     titleBarStyle: 'customButtonsOnHover',
     frame: false
   })
+
+  mainWindow.setWindowButtonVisibility(false)
 
   mainWindow.on('ready-to-show', () => {
     mainWindow.show()
