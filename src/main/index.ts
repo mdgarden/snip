@@ -8,17 +8,38 @@ function createWindow(): void {
   const mainWindow = new BrowserWindow({
     width: 900,
     height: 670,
-    show: false,
-    autoHideMenuBar: true,
+    show: true,
+    autoHideMenuBar: false,
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
-      sandbox: false
-    }
+      sandbox: false,
+      webviewTag: true
+    },
+    titleBarStyle: 'customButtonsOnHover',
+    frame: false
   })
+
+  mainWindow.setWindowButtonVisibility(false)
 
   mainWindow.on('ready-to-show', () => {
     mainWindow.show()
+  })
+
+  ipcMain.on('minimize-window', () => {
+    mainWindow.minimize()
+  })
+
+  ipcMain.on('maximize-window', () => {
+    mainWindow.maximize()
+  })
+
+  ipcMain.on('close-window', () => {
+    mainWindow.close()
+  })
+
+  ipcMain.on('toggle-always-on-top', (_, isAlwaysOnTop) => {
+    mainWindow.setAlwaysOnTop(isAlwaysOnTop)
   })
 
   mainWindow.webContents.setWindowOpenHandler((details) => {
