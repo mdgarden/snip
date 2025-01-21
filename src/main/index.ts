@@ -20,7 +20,9 @@ function createWindow(): void {
     frame: false
   })
 
-  mainWindow.setWindowButtonVisibility(false)
+  if (process.platform === 'darwin' && mainWindow.setWindowButtonVisibility) {
+    mainWindow.setWindowButtonVisibility(false)
+  }
 
   mainWindow.on('ready-to-show', () => {
     mainWindow.show()
